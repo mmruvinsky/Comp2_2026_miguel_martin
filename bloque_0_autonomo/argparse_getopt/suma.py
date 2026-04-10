@@ -1,17 +1,27 @@
+#!/usr/bin/env python3
 import sys
+
 
 def main():
     nums = sys.argv[1:]
-    sum = 0
-    for num in nums:
-        if num.isdigit():
-            sum += int(num)
-        elif num == '-h' or num == '--help':
-            print("Uso: python suma.py [números]")
-            print("Suma los números proporcionados como argumentos.")
-            return
-        else:
-            print(f"'{num}' no es un número válido y se ignorará.")
-    print(f"La suma es: {sum}")
 
-if __name__ == "__main__":    main()
+    if not nums:
+        print("Suma: 0")
+        return
+
+    total = 0.0
+    for num in nums:
+        try:
+            total += float(num)
+        except ValueError:
+            print(f"'{num}' no es un número válido y se ignorará.", file=sys.stderr)
+
+    # Mostrar como int si no tiene decimales
+    if total == int(total):
+        print(f"Suma: {int(total)}")
+    else:
+        print(f"Suma: {total}")
+
+
+if __name__ == "__main__":
+    main()
