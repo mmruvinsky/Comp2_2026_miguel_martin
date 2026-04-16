@@ -1,36 +1,23 @@
 #!/usr/bin/env python3
-
 import sys
 
-def contar_lineas(argv):
+def main():
+    if len(sys.argv) < 2:
+        print("Error: Debe especificar un archivo")
+        sys.exit(1)
 
+    archivo = sys.argv[1]
 
     try:
-        if len(argv) < 2:
-            print("Uso: python wc_simple.py [archivo]")
-            return
-
-        archivo = argv[1]
-
-        if archivo in ('-h', '--help'):
-            print("Uso: python wc_simple.py [archivo]")
-            print("Cuenta el número de líneas en el archivo proporcionado.")
-            return
-        else:
-            with open(archivo, 'r') as f:
-                return sum(1 for line in f)
+        with open(archivo, 'r') as f:
+            lineas = sum(1 for _ in f)
+        print(f"{lineas} líneas")
     except FileNotFoundError:
-        print(f"Error: El archivo '{archivo}' no fue encontrado.")
-    except Exception as e:
-        print(f"Error al leer el archivo: {e}")
-
-
-def main():
-    lineas = contar_lineas(sys.argv)
-    if lineas is not None:
-      print(f"El archivo '{sys.argv[1]}' tiene {lineas} líneas.")
-    else:     print("No se pudo contar las líneas.")
- 
+        print(f"Error: No se puede leer '{archivo}'")
+        sys.exit(1)
+    except PermissionError:
+        print(f"Error: No se puede leer '{archivo}'")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
